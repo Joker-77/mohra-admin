@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\scenes",
+    "\\src\\scenes\\Cities",
+    "\\src\\scenes\\Clients",
+    "\\src\\scenes\\Clients\\components",
+    "\\src\\services",
+    "\\src\\services\\clients",
+    "\\src\\services\\dashboard",
+    "\\src\\services\\dashboard\\dto",
+    "\\src\\stores"
+  ],
+  "SelectedNode": "\\src\\scenes\\Clients\\components\\appointmentDetailsModal.tsx",
+  "PreviewInSolutionExplorer": false
+}

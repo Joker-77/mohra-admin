@@ -1,0 +1,67 @@
+.details-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.detail-wrapper {
+  margin-bottom: 15px;
+  width: 50%;
+}
+
+.detail-label {
+  font-weight: 600 !important;
+  display: block;
+}
+.detail-value {
+  display: inline;
+  margin: 0 5px;
+}
+
+.detail-value .ant-avatar > img {
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+.export-btn {
+  border-color: rgb(9, 155, 9);
+  color: rgb(9, 155, 9);
+}
+.export-btn svg {
+  fill: rgb(9, 155, 9);
+  transition: 0.2s all ease-out;
+}
+
+.export-btn:hover,
+.export-btn:focus,
+.export-btn:focus-within {
+  border-color: rgb(9, 155, 9);
+  background-color: rgb(9, 155, 9);
+}
+.export-btn:hover svg,
+.export-btn:focus svg,
+.export-btn:focus-within svg {
+  fill: white;
+}
+
+.scrollable-modal .ant-tabs {
+  padding: 0;
+  margin-top: -10px !important;
+}
+
+.details-wrapper.health-profile-info {
+  border: 1px solid #d9d9d9;
+  background-color: #fafafa;
+  padding: 5px 20px;
+  margin-top: 25px;
+}
+
+.loading-overlay {
+  display: fixed;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  padding-top: 10%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  z-index: 2; 
+}
