@@ -2665,13 +2665,11 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   {this.props.clientStore.checkins && this.props.clientStore.checkins.length > 0 ? (
                     <>
                       {this.props.clientStore.checkins.map((item: MomentDto, index: number) => {
-                        return `${index + 1}.${L('PlaceName')}:${item.placeName}, ${L(
+                        return `${index + 1}.${L('Caption')}:${item.caption}, ${L(
                           'Date'
                         )}:{${moment(item.creationTime).format(
                           timingHelper.defaultDateFormat
-                        )}}, ${L('Challenge')}:${item.challenge.title}, ${L('SongName')}:${
-                          item.songName
-                        }, ${L('CommentsCount')}:${item.commentsCount}.\n`;
+                        )}}, ${L('PlaceName')}:${item.placeName}.\n`;
                       })}
                     </>
                   ) : (
