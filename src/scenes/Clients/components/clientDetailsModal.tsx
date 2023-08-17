@@ -74,7 +74,7 @@ import SessionDetails from './sessionDetailsModal';
 import MomentDetails from './momentDetailsModal';
 import EventDetails from '../../Events/components/eventDetailsModal';
 import { hoursToMonthDaysHoursMinutes } from '../../../helpers';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
@@ -207,10 +207,17 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
   handleCancel = () => {
     this.props.onCancel();
   };
+
+  handleFilterFromDateChange = (newDate: any) => {
+    this.setState({ filterFromDate: newDate });
+  };
+
   state = {
     filterChosenDate: 0,
     filterFromDate: undefined,
     filterToDate: undefined,
+    // filterFromDate: null, // or initial date value
+    // filterToDate: null,   // or initial date value
     isImageModalOpened: false,
     imageModalCaption: '',
     imageModalUrl: '',
@@ -378,6 +385,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
     filterFromDate?: any,
     filterToDate?: any
   ): Promise<void> {
+    console.log('filterFromDate:', filterFromDate);
+    console.log('filterToDate:', filterToDate);
     this.props.clientStore!.filterChosenDate = this.state.filterChosenDate;
     this.props.clientStore!.filterFromDate = this.state.filterFromDate;
     this.props.clientStore!.filterToDate = this.state.filterToDate;
@@ -2093,9 +2102,11 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                       <label>&nbsp;</label>
                       <Space direction="horizontal" size={2}>
                         <DatePicker
-                          onChange={(date: Moment | null, dateString: string) => {
-                            this.setState({ filterFromDate: dateString });
-                          }}
+                          value={this.state.filterFromDate}
+                          onChange={this.handleFilterFromDateChange}
+                          // onChange={(date: Moment | null, dateString: string) => {
+                          //   this.setState({ filterFromDate: dateString });
+                          // }}
                           defaultValue={this.state.filterFromDate}
                           format={`MM/DD/YYYY`}
                         />
@@ -2128,12 +2139,22 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     type="primary"
                     onClick={async () => {
                       await this.updateCheckinsList(
+                        // this.state.checkinsMeta.pageSize,
+                        // (page - 1) * this.state.checkinsMeta.pageSize,
+                        // this.props.id,
+                        // this.state.filterFromDate,
+                        // this.state.filterToDate
+
                         this.state.checkinsMeta.pageSize,
                         this.state.checkinsMeta.skipCount,
                         this.props.id,
-                        this.state.checkinsMeta.filterFromDate,
-                        this.state.checkinsMeta.filterToDate
+                        // this.state.checkinsMeta.filterFromDate,
+                        // this.state.checkinsMeta.filterToDate
+                        this.state.filterFromDate,
+                        this.state.filterToDate
                       );
+                      console.log('filterFromDate:', this.state.filterFromDate);
+                      console.log('filterToDate:', this.state.filterToDate);
                     }}
                     style={{ width: 90 }}
                   >
@@ -2646,13 +2667,11 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                       {this.props.clientStore.checkins.map((item: MomentDto, index: number) => {
                         return `${index + 1}.${L('PlaceName')}:${item.placeName}, ${L(
                           'Date'
-                        )}:${moment(item.creationTime).format(
+                        )}:{${moment(item.creationTime).format(
                           timingHelper.defaultDateFormat
-                        )}}, ${L('Challenge')}:${item.challenge}, ${L('SongName')}:${
+                        )}}, ${L('Challenge')}:${item.challenge.title}, ${L('SongName')}:${
                           item.songName
-                        }, ${L('CommentsCount')}:${item.commentsCount}, ${L('Comments')}:${
-                          item.comments
-                        }.\n`;
+                        }, ${L('CommentsCount')}:${item.commentsCount}.\n`;
                       })}
                     </>
                   ) : (
