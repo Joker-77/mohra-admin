@@ -519,6 +519,7 @@
   "SeatCount": "Seat Count",
   "PriceType": "Price Type",
   "PlaceName": "Place Name",
+  "CheckInName": "CheckIn Name",
   "PlaceDescription": "Place Description",
   "CreateExercise": "Create Exercise",
   "Sessions": "Sessions",
@@ -1296,10 +1297,9 @@
   "streetAddress": "Street Address",
   "taxFee": "tax Fee",
   "shippingFee": "Shipping Fee",
-  "WithdrawRequests":"Wallet/Cash Withdraw",
-  "Approve":"Approve",
-  "AreYouSureYouWantToApproveThisWithdrawRequest":"Are You Sure You Want To Approve This WithdrawRequest",
-  "ClientID":"Client ID",
-  "TotalAmount":"Total Amount"
-
+  "WithdrawRequests": "Wallet/Cash Withdraw",
+  "Approve": "Approve",
+  "AreYouSureYouWantToApproveThisWithdrawRequest": "Are You Sure You Want To Approve This WithdrawRequest",
+  "ClientID": "Client ID",
+  "TotalAmount": "Total Amount"
 }

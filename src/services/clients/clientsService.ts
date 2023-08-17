@@ -15,7 +15,7 @@ import {
   TotalFriendsDto,
   SalaryCountsDto,
   AuthSessionDto,
-  HealthProfileInfoDto
+  HealthProfileInfoDto,
 } from './dto/clientDto';
 import { AdminPagedFilterRequest } from '../admins/dto/adminPagedFilterRequest';
 import { CreateClientDto } from './dto/createClientDto';
@@ -30,7 +30,7 @@ class ClientsService {
       params: {
         skipCount: input.skipCount,
         maxResultCount: input.maxResultCount,
-        Sorting : input.Sorting,
+        Sorting: input.Sorting,
         isActive: input.isActive,
         keyword: input.keyword,
         filterChosenDate: input.filterChosenDate,
@@ -68,7 +68,9 @@ class ClientsService {
   }
 
   public async getHealthProfileInfo(input: EntityDto): Promise<HealthProfileInfoDto> {
-    let result = await http.get(`api/services/app/HealthProfile/GetHealthProfileInfoAdmin?clientId=${input.id}`);
+    let result = await http.get(
+      `api/services/app/HealthProfile/GetHealthProfileInfoAdmin?clientId=${input.id}`
+    );
     return result.data.result;
   }
 
@@ -188,10 +190,8 @@ class ClientsService {
     });
     return result.data.result;
   }
-  
-  public async getAuthSession(
-    clientId: number
-  ): Promise<PagedResultDto<AuthSessionDto>> {
+
+  public async getAuthSession(clientId: number): Promise<PagedResultDto<AuthSessionDto>> {
     let result = await http.get(`/api/services/app/User/GetAudit?userId=${clientId}`);
     return result.data.result;
   }
@@ -229,11 +229,24 @@ class ClientsService {
     return result.data.result;
   }
 
+  public async getCheckIns(input: ClientPagedFilterRequest): Promise<PagedResultDto<MomentDto>> {
+    let result = await http.get('api/services/app/Client/GetUserHistoryCheckIns', {
+      params: {
+        skipCount: input?.skipCount,
+        maxResultCount: input?.maxResultCount,
+        clientId: input.clientId,
+        // filterChosenDate: input.filterChosenDate,
+        FirstDate: input.filterFromDate,
+        SecondDate: input.filterToDate,
+      },
+    });
+    return result.data.result;
+  }
+
   public async deleteClient(input: EntityDto) {
     let result = await http.delete('api/services/app/Client/Delete', { params: { id: input.id } });
     return result.data;
   }
-
 }
 
 export default new ClientsService();

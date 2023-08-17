@@ -1,6 +1,18 @@
 /* eslint-disable */
 import * as React from 'react';
-import { Button, Card, Table, Tag, Select, Row, Col, Tooltip, Input, Space, DatePicker } from 'antd';
+import {
+  Button,
+  Card,
+  Table,
+  Tag,
+  Select,
+  Row,
+  Col,
+  Tooltip,
+  Input,
+  Space,
+  DatePicker,
+} from 'antd';
 import { inject, observer } from 'mobx-react';
 import Stores from '../../stores/storeIdentifier';
 import AppComponentBase from '../../components/AppComponentBase';
@@ -39,7 +51,6 @@ import { popupConfirm } from '../../lib/popupMessages';
 import Highlighter from 'react-highlight-words';
 import { GenderType, UserStatus } from '../../lib/types';
 import ExcellentExport from 'excellentexport';
-
 
 const { RangePicker } = DatePicker;
 export interface IClientsProps {
@@ -80,9 +91,9 @@ export interface IClientsState {
   searchedColumn: string;
   keyword?: string;
   isActiveFilter?: boolean;
-  filterChosenDate: number,
-  filterFromDate?: string,
-  filterToDate?: string,
+  filterChosenDate: number;
+  filterFromDate?: string;
+  filterToDate?: string;
 }
 
 const INDEX_PAGE_SIZE_DEFAULT = 4;
@@ -222,7 +233,7 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
         create: (await utils.checkIfGrantedPermission('Clients.Create')).valueOf(),
         activation: (await utils.checkIfGrantedPermission('Clients.Activation')).valueOf(),
         resetPassword: (await utils.checkIfGrantedPermission('Clients.ResetPassword')).valueOf(),
-        delete: (await utils.checkIfGrantedPermission('Clients.Delete')).valueOf()
+        delete: (await utils.checkIfGrantedPermission('Clients.Delete')).valueOf(),
       },
     });
     this.updateClientsList(this.state.meta.pageSize, 0);
@@ -316,6 +327,13 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
         maxResultCount: 15,
         skipCount: 0,
       }),
+      this.props.clientStore!.getCheckins({
+        clientId: entityDto.id,
+        maxResultCount: 15,
+        skipCount: 0,
+        filterFromDate: '',
+        filterToDate: '',
+      }),
       this.props.clientStore!.getSessions({
         clientId: entityDto.id,
         maxResultCount: 15,
@@ -331,11 +349,13 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
         maxResultCount: 15,
         skipCount: 0,
       }),
-    ]).then(() => {
-      this.props.clientStore?.setDetailsModalLoading(false);
-    }).catch(() => {
-      this.props.clientStore?.setDetailsModalLoading(false);
-    });
+    ])
+      .then(() => {
+        this.props.clientStore?.setDetailsModalLoading(false);
+      })
+      .catch(() => {
+        this.props.clientStore?.setDetailsModalLoading(false);
+      });
   }
   createOrUpdateClient = () => {
     const form = this.formRef.current;
@@ -367,7 +387,6 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
   };
 
   onDeleteClient = async (input: EntityDto) => {
-
     popupConfirm(async () => {
       await this.props.clientStore!.deleteClient({ id: input.id });
       await this.updateClientsList(this.state.meta.pageSize, this.state.meta.skipCount);
@@ -474,16 +493,14 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
             </Tooltip>
           ) : null}
 
-          {
-            this.state.permisssionsGranted.delete ? (
-              <Tooltip title={L('Delete')}>
-                <DeleteOutlined
-                  className="action-icon  red-text"
-                  onClick={() => this.onDeleteClient({ id: item.id })}
-                />
-              </Tooltip>
-            ) : null
-          }
+          {this.state.permisssionsGranted.delete ? (
+            <Tooltip title={L('Delete')}>
+              <DeleteOutlined
+                className="action-icon  red-text"
+                onClick={() => this.onDeleteClient({ id: item.id })}
+              />
+            </Tooltip>
+          ) : null}
         </div>
       ),
     },
@@ -506,7 +523,7 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
     pageSizeOptions: this.state.meta.pageSizeOptions,
     showTotal: (total: any, range: any) => `${range[0]} ${L('To')} ${range[1]} ${L('Of')} ${total}`,
   };
-  
+
   public render() {
     const clients = this.props.clientStore!.clients;
     const pagination = {
@@ -603,17 +620,16 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                       {client.gender === GenderType.Female
                         ? L('Female')
                         : client.gender === GenderType.Male
-                          ? L('Male')
-                          : L('Not Selected')}
+                        ? L('Male')
+                        : L('Not Selected')}
                     </td>
                     <td>{client.hasAvatar ? L('Yes') : L('No')}</td>
                     <td>{client.city ? client.city.text : L('NotAvailable')}</td>
                     <td>
                       {client.addresses && client.addresses.length > 0
-                        ? client.addresses.map(
-                          (address: AddressDto) =>
-                            client.city ? client.city.text + ', ' : '' + + address.street + ' - '
-                        )
+                        ? client.addresses.map((address: AddressDto) =>
+                            client.city ? client.city.text + ', ' : '' + +address.street + ' - '
+                          )
                         : L('NotAvailable')}
                     </td>
                     <td>{moment(client.birthDate).format(timingHelper.defaultDateFormat)}</td>
@@ -627,8 +643,8 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                       {client.status === UserStatus.Inactive
                         ? L('Inactive')
                         : client.status === UserStatus.Active
-                          ? L('Active')
-                          : L('Blocked')}
+                        ? L('Active')
+                        : L('Blocked')}
                     </td>
                     <td>{moment(client.creationTime).format(timingHelper.defaultDateFormat)}</td>
                   </tr>
@@ -676,7 +692,7 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                 showSearch
                 optionFilterProp="children"
                 onChange={(value: any) => {
-                  this.setState({ filterChosenDate: Number(value) })
+                  this.setState({ filterChosenDate: Number(value) });
                 }}
                 value={this.state.filterChosenDate}
               >
@@ -697,24 +713,40 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                 </Select.Option>
               </Select>
             </Col>
-            {this.state.filterChosenDate===3 && (<Col {...colLayout}>
-              <label>&nbsp;</label>
-              <Space direction="horizontal" size={2}>
-                <DatePicker onChange={(date: Moment | null, dateString: string) => { this.setState({ filterFromDate: dateString }); }} defaultValue={this.state.filterFromDate} format={`MM/DD/YYYY`} />
-              </Space>
-            </Col>)}
-            {this.state.filterChosenDate===4 && (<Col {...colLayout}>
-              <label>&nbsp;</label>
-              <Space direction="horizontal" size={2}>
-                <RangePicker onChange={(dates: any, dateStrings: [string, string]) => { 
-                  if (dates) {
-                    this.setState({ filterFromDate: dateStrings[0], filterToDate: dateStrings[1] });
-                  } else {
-                    console.log('Clear');
-                  }  
-                }} format={`MM/DD/YYYY`} />
-              </Space>
-            </Col>)}
+            {this.state.filterChosenDate === 3 && (
+              <Col {...colLayout}>
+                <label>&nbsp;</label>
+                <Space direction="horizontal" size={2}>
+                  <DatePicker
+                    onChange={(date: Moment | null, dateString: string) => {
+                      this.setState({ filterFromDate: dateString });
+                    }}
+                    defaultValue={this.state.filterFromDate}
+                    format={`MM/DD/YYYY`}
+                  />
+                </Space>
+              </Col>
+            )}
+            {this.state.filterChosenDate === 4 && (
+              <Col {...colLayout}>
+                <label>&nbsp;</label>
+                <Space direction="horizontal" size={2}>
+                  <RangePicker
+                    onChange={(dates: any, dateStrings: [string, string]) => {
+                      if (dates) {
+                        this.setState({
+                          filterFromDate: dateStrings[0],
+                          filterToDate: dateStrings[1],
+                        });
+                      } else {
+                        console.log('Clear');
+                      }
+                    }}
+                    format={`MM/DD/YYYY`}
+                  />
+                </Space>
+              </Col>
+            )}
           </Row>
           <Row style={{ marginTop: '15px' }}>
             <Button
@@ -728,7 +760,7 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
             </Button>
             <Button
               onClick={() => {
-                this.setState({ isActiveFilter: undefined, filterChosenDate: 0, }, async () => {
+                this.setState({ isActiveFilter: undefined, filterChosenDate: 0 }, async () => {
                   await this.updateClientsList(this.state.meta.pageSize, this.state.meta.skipCount);
                 });
               }}

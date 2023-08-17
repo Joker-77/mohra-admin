@@ -1,13 +1,28 @@
 /* eslint-disable */
 import * as React from 'react';
-import { Modal, Button, Tag, Avatar, Tabs, Collapse, Table, Image, Tooltip, Spin } from 'antd';
+import {
+  Modal,
+  Button,
+  Tag,
+  Avatar,
+  Tabs,
+  Collapse,
+  Table,
+  Image,
+  Tooltip,
+  Spin,
+  Select,
+  Row,
+  Col,
+  Space,
+  DatePicker,
+} from 'antd';
 import Stores from '../../../stores/storeIdentifier';
 import { inject, observer } from 'mobx-react';
 import { L } from '../../../i18next';
 import localization from '../../../lib/localization';
 import './clientDetailsModal.css';
 import ClientStore from '../../../stores/clientStore';
-import moment from 'moment';
 import timingHelper from '../../../lib/timingHelper';
 import {
   AppointmentRepeat,
@@ -18,7 +33,7 @@ import {
   UserStatus,
 } from '../../../lib/types';
 import ImageModal from '../../../components/ImageModal';
-
+import FilterationBox from '../../../components/FilterationBox';
 import {
   AddressDto,
   AnswerOutPutDto,
@@ -43,6 +58,7 @@ import {
   InfoCircleOutlined,
   OrderedListOutlined,
   PlayCircleOutlined,
+  CheckCircleOutlined,
   QuestionCircleOutlined,
   RetweetOutlined,
   ScheduleOutlined,
@@ -58,10 +74,21 @@ import SessionDetails from './sessionDetailsModal';
 import MomentDetails from './momentDetailsModal';
 import EventDetails from '../../Events/components/eventDetailsModal';
 import { hoursToMonthDaysHoursMinutes } from '../../../helpers';
+import moment, { Moment } from 'moment';
+
+const { RangePicker } = DatePicker;
 
 export const fallBackImage =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3PTWBSGcbGzM6GCKqlIBRV0dHRJFarQ0eUT8LH4BnRU0NHR0UEFVdIlFRV7TzRksomPY8uykTk/zewQfKw/9znv4yvJynLv4uLiV2dBoDiBf4qP3/ARuCRABEFAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghggQAQZQKAnYEaQBAQaASKIAQJEkAEEegJmBElAoBEgghgg0Aj8i0JO4OzsrPv69Wv+hi2qPHr0qNvf39+iI97soRIh4f3z58/u7du3SXX7Xt7Z2enevHmzfQe+oSN2apSAPj09TSrb+XKI/f379+08+A0cNRE2ANkupk+ACNPvkSPcAAEibACyXUyfABGm3yNHuAECRNgAZLuYPgEirKlHu7u7XdyytGwHAd8jjNyng4OD7vnz51dbPT8/7z58+NB9+/bt6jU/TI+AGWHEnrx48eJ/EsSmHzx40L18+fLyzxF3ZVMjEyDCiEDjMYZZS5wiPXnyZFbJaxMhQIQRGzHvWR7XCyOCXsOmiDAi1HmPMMQjDpbpEiDCiL358eNHurW/5SnWdIBbXiDCiA38/Pnzrce2YyZ4//59F3ePLNMl4PbpiL2J0L979+7yDtHDhw8vtzzvdGnEXdvUigSIsCLAWavHp/+qM0BcXMd/q25n1vF57TYBp0a3mUzilePj4+7k5KSLb6gt6ydAhPUzXnoPR0dHl79WGTNCfBnn1uvSCJdegQhLI1vvCk+fPu2ePXt2tZOYEV6/fn31dz+shwAR1sP1cqvLntbEN9MxA9xcYjsxS1jWR4AIa2Ibzx0tc44fYX/16lV6NDFLXH+YL32jwiACRBiEbf5KcXoTIsQSpzXx4N28Ja4BQoK7rgXiydbHjx/P25TaQAJEGAguWy0+2Q8PD6/Ki4R8EVl+bzBOnZY95fq9rj9zAkTI2SxdidBHqG9+skdw43borCXO/ZcJdraPWdv22uIEiLA4q7nvvCug8WTqzQveOH26fodo7g6uFe/a17W3+nFBAkRYENRdb1vkkz1CH9cPsVy/jrhr27PqMYvENYNlHAIesRiBYwRy0V+8iXP8+/fvX11Mr7L7ECueb/r48eMqm7FuI2BGWDEG8cm+7G3NEOfmdcTQw4h9/55lhm7DekRYKQPZF2ArbXTAyu4kDYB2YxUzwg0gi/41ztHnfQG26HbGel/crVrm7tNY+/1btkOEAZ2M05r4FB7r9GbAIdxaZYrHdOsgJ/wCEQY0J74TmOKnbxxT9n3FgGGWWsVdowHtjt9Nnvf7yQM2aZU/TIAIAxrw6dOnAWtZZcoEnBpNuTuObWMEiLAx1HY0ZQJEmHJ3HNvGCBBhY6jtaMoEiJB0Z29vL6ls58vxPcO8/zfrdo5qvKO+d3Fx8Wu8zf1dW4p/cPzLly/dtv9Ts/EbcvGAHhHyfBIhZ6NSiIBTo0LNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiECRCjUbEPNCRAhZ6NSiAARCjXbUHMCRMjZqBQiQIRCzTbUnAARcjYqhQgQoVCzDTUnQIScjUohAkQo1GxDzQkQIWejUogAEQo121BzAkTI2agUIkCEQs021JwAEXI2KoUIEKFQsw01J0CEnI1KIQJEKNRsQ80JECFno1KIABEKNdtQcwJEyNmoFCJAhELNNtScABFyNiqFCBChULMNNSdAhJyNSiEC/wGgKKC4YMA4TAAAAABJRU5ErkJggg==';
 
+const colLayout = {
+  xs: { span: 24 },
+  sm: { span: 24 },
+  md: { span: 8 },
+  lg: { span: 6 },
+  xl: { span: 6 },
+  xxl: { span: 6 },
+};
 export interface IClientDetailsModalProps {
   visible: boolean;
   onCancel: () => void;
@@ -160,7 +187,9 @@ export interface IClientDetailsState {
     skipCount: number;
   };
   momentDetailsModalVisible: boolean;
-
+  filterChosenDate?: number;
+  filterFromDate?: string;
+  filterToDate?: string;
   isImageModalOpened: boolean;
   imageModalCaption: string;
   imageModalUrl: string;
@@ -179,6 +208,9 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
     this.props.onCancel();
   };
   state = {
+    filterChosenDate: 0,
+    filterFromDate: undefined,
+    filterToDate: undefined,
     isImageModalOpened: false,
     imageModalCaption: '',
     imageModalUrl: '',
@@ -267,6 +299,16 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
       total: 0,
       skipCount: 0,
     },
+    checkinsMeta: {
+      page: 1,
+      pageSize: INDEX_PAGE_SIZE_DEFAULT,
+      pageSizeOptions: INDEX_PAGE_SIZE_OPTIONS,
+      pageTotal: 1,
+      total: 0,
+      skipCount: 0,
+      filterFromDate: '',
+      filterToDate: '',
+    },
     dishesMeta: {
       page: 1,
       pageSize: INDEX_PAGE_SIZE_DEFAULT,
@@ -328,6 +370,24 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
     clientId?: number
   ): Promise<void> {
     await this.props.clientStore!.getMoments({ clientId, maxResultCount, skipCount });
+  }
+  async updateCheckinsList(
+    maxResultCount: number,
+    skipCount: number,
+    clientId?: number,
+    filterFromDate?: any,
+    filterToDate?: any
+  ): Promise<void> {
+    this.props.clientStore!.filterChosenDate = this.state.filterChosenDate;
+    this.props.clientStore!.filterFromDate = this.state.filterFromDate;
+    this.props.clientStore!.filterToDate = this.state.filterToDate;
+    await this.props.clientStore!.getCheckins({
+      clientId,
+      maxResultCount,
+      skipCount,
+      filterFromDate,
+      filterToDate,
+    });
   }
   async updateSessionList(
     maxResultCount: number,
@@ -831,6 +891,31 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
       `${range[0]} ${L('To')} ${range[1]} ${L('Of')} ${total}`,
   };
 
+  checkinsPaginationOptions = {
+    showSizeChanger: true,
+    onShowSizeChange: async (_: number, pageSize: any) => {
+      const temp = this.state;
+      temp.checkinsMeta.pageSize = pageSize;
+      this.setState(temp);
+      this.updateCheckinsList(pageSize, 0, this.props.id, '', '');
+    },
+    onChange: async (page: number) => {
+      const temp = this.state;
+      temp.checkinsMeta.page = page;
+      this.setState(temp);
+      await this.updateCheckinsList(
+        this.state.checkinsMeta.pageSize,
+        (page - 1) * this.state.checkinsMeta.pageSize,
+        this.props.id,
+        '',
+        ''
+      );
+    },
+    pageSizeOptions: this.state.checkinsMeta.pageSizeOptions,
+    showTotal: (total: number, range: number[]) =>
+      `${range[0]} ${L('To')} ${range[1]} ${L('Of')} ${total}`,
+  };
+
   FriendaPaginationOptions = {
     showSizeChanger: true,
     onShowSizeChange: async (_: number, pageSize: any) => {
@@ -1326,6 +1411,76 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
       },
     },
   ];
+
+  checkinssTableColumns = [
+    {
+      title: L('ID'),
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: L('CheckInName'),
+      dataIndex: 'caption',
+      key: 'caption',
+    },
+
+    {
+      title: L('Image'),
+      dataIndex: 'imageUrl',
+      key: 'imageUrl',
+      render: (mainPicture: string) => {
+        return (
+          <Image
+            preview={!!mainPicture}
+            width={50}
+            height={50}
+            src={mainPicture || fallBackImage}
+            alt={L('Image')}
+          />
+        );
+      },
+    },
+    {
+      title: L('CommentsCount'),
+      dataIndex: 'commentsCount',
+      key: 'commentsCount',
+    },
+    {
+      title: L('InteractionsCount'),
+      dataIndex: 'interactionsCount',
+      key: 'interactionsCount',
+    },
+
+    {
+      title: L('CreationDate'),
+      dataIndex: 'creationTime',
+      key: 'creationTime',
+      render: (creationTime: string): string =>
+        `${moment(creationTime).format(timingHelper.defaultDateFormat)}`,
+    },
+    {
+      title: L('PlaceName'),
+      dataIndex: 'placeName',
+      key: 'placeName',
+    },
+
+    {
+      title: L('Action'),
+      key: 'action',
+      render: (_: string, item: MomentDto): JSX.Element => {
+        return (
+          <div>
+            <Tooltip title={L('Details')}>
+              <EyeOutlined
+                className="action-icon"
+                onClick={() => this.openMomentDetailsModal({ id: item.id! })}
+              />
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+  ];
   render() {
     const { visible } = this.props;
     const { clientModel, healthProfileInfo } = this.props.clientStore!;
@@ -1347,6 +1502,12 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
       total: this.props.clientStore?.momentsTotalCount,
       current: this.state.momentsMeta.page,
       pageSize: this.state.momentsMeta.pageSize,
+    };
+    const checkinsPagination = {
+      ...this.checkinsPaginationOptions,
+      total: this.props.clientStore?.checkinsTotalCount,
+      current: this.state.checkinsMeta.page,
+      pageSize: this.state.checkinsMeta.pageSize,
     };
     const dishesPagination = {
       ...this.dishesPaginationOptions,
@@ -1903,6 +2064,111 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             <Tabs.TabPane
               tab={
                 <span>
+                  <CheckCircleOutlined />
+                  {L('CheckIns')}
+                </span>
+              }
+              key="15"
+            >
+              <FilterationBox>
+                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                  <Col {...colLayout}>
+                    <label>{L('Clients')}</label>
+                    <Select
+                      style={{ display: 'block' }}
+                      showSearch
+                      optionFilterProp="children"
+                      onChange={(value: any) => {
+                        this.setState({ filterChosenDate: Number(value) });
+                      }}
+                      value={this.state.filterChosenDate}
+                    >
+                      <Select.Option key={0} value={4}>
+                        {L('RangeDate')}
+                      </Select.Option>
+                    </Select>
+                  </Col>
+                  {this.state.filterChosenDate === 3 && (
+                    <Col {...colLayout}>
+                      <label>&nbsp;</label>
+                      <Space direction="horizontal" size={2}>
+                        <DatePicker
+                          onChange={(date: Moment | null, dateString: string) => {
+                            this.setState({ filterFromDate: dateString });
+                          }}
+                          defaultValue={this.state.filterFromDate}
+                          format={`MM/DD/YYYY`}
+                        />
+                      </Space>
+                    </Col>
+                  )}
+                  {this.state.filterChosenDate === 4 && (
+                    <Col {...colLayout}>
+                      <label>&nbsp;</label>
+                      <Space direction="horizontal" size={2}>
+                        <RangePicker
+                          onChange={(dates: any, dateStrings: [string, string]) => {
+                            if (dates) {
+                              this.setState({
+                                filterFromDate: dateStrings[0],
+                                filterToDate: dateStrings[1],
+                              });
+                            } else {
+                              console.log('Clear');
+                            }
+                          }}
+                          format={`MM/DD/YYYY`}
+                        />
+                      </Space>
+                    </Col>
+                  )}
+                </Row>
+                <Row style={{ marginTop: '15px' }}>
+                  <Button
+                    type="primary"
+                    onClick={async () => {
+                      await this.updateCheckinsList(
+                        this.state.checkinsMeta.pageSize,
+                        this.state.checkinsMeta.skipCount,
+                        this.props.id,
+                        this.state.checkinsMeta.filterFromDate,
+                        this.state.checkinsMeta.filterToDate
+                      );
+                    }}
+                    style={{ width: 90 }}
+                  >
+                    {L('Filter')}
+                  </Button>
+                  {/* <Button
+                    onClick={() => {
+                      this.setState(
+                        { isActiveFilter: undefined, filterChosenDate: 0 },
+                        async () => {
+                          await this.updateAdminsList(
+                            this.state.meta.pageSize,
+                            this.state.meta.skipCount
+                          );
+                        }
+                      );
+                    }}
+                    style={{ width: 90, marginRight: 4, marginLeft: 4 }}
+                  >
+                    {L('ResetFilter')}
+                  </Button> */}
+                </Row>
+              </FilterationBox>
+              <Table
+                className="checkins-table"
+                pagination={checkinsPagination}
+                rowKey={(record) => `${record.id}`}
+                loading={this.props.clientStore?.loadingCheckins}
+                dataSource={this.props.clientStore.checkins || []}
+                columns={this.checkinssTableColumns}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab={
+                <span>
                   <HeartOutlined /> {L('Sessions')}
                 </span>
               }
@@ -2238,6 +2504,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <td>{L('Challenges')}</td>
               <td>{L('Events')}</td>
               <td>{L('Moments')}</td>
+              <td>{L('CheckIns')}</td>
               <td>{L('Sessions')}</td>
               <td>{L('Dishes')}</td>
               <td>{L('ToDoList')}</td>
@@ -2373,6 +2640,25 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   )}
                 </td>
                 <td>{L('Moments')}</td>
+                <td>
+                  {this.props.clientStore.checkins && this.props.clientStore.checkins.length > 0 ? (
+                    <>
+                      {this.props.clientStore.checkins.map((item: MomentDto, index: number) => {
+                        return `${index + 1}.${L('PlaceName')}:${item.placeName}, ${L(
+                          'Date'
+                        )}:${moment(item.creationTime).format(
+                          timingHelper.defaultDateFormat
+                        )}}, ${L('Challenge')}:${item.challenge}, ${L('SongName')}:${
+                          item.songName
+                        }, ${L('CommentsCount')}:${item.commentsCount}, ${L('Comments')}:${
+                          item.comments
+                        }.\n`;
+                      })}
+                    </>
+                  ) : (
+                    L('NotAvailable')
+                  )}
+                </td>
                 <td>
                   {this.props.clientStore.sessions && this.props.clientStore.sessions.length > 0 ? (
                     <>

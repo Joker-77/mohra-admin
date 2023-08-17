@@ -16,7 +16,7 @@ import { SimpleClientDto } from './simpleClientDto';
 
 interface AvatarDto {
   image: string;
-  avatarUrl: string,
+  avatarUrl: string;
   arDescription: string;
   enDescription: string;
   description: string;
@@ -60,7 +60,7 @@ interface AddressDto {
   longitude: number;
   id: number;
   cityName?: string;
-  isDefault?:boolean;
+  isDefault?: boolean;
 }
 
 interface HealthProfileAnswerDto {
@@ -124,6 +124,8 @@ interface ClientPagedFilterRequest {
   maxResultCount?: number;
   skipCount?: number;
   clientId?: number;
+  filterFromDate?: '';
+  filterToDate?: '';
 }
 
 interface AppointmentDto {
@@ -183,16 +185,15 @@ interface TotalFriendsDto {
 }
 
 interface SalaryCountsDto {
-  id:number;
+  id: number;
   enTitle: string;
   arTitle: string;
   title: string;
-  creationTime:Date;
-  order:number;
-  
+  creationTime: Date;
+  order: number;
 }
 interface AuthSessionDto {
-  id:number;
+  id: number;
   userId: string;
   loginDate: string;
   logoutDate: string;
@@ -295,8 +296,8 @@ export type {
   AnswerOutPutDto,
   HealthProfileAnswerDto,
   AddressDto,
-  AvatarDto, 
+  AvatarDto,
   SalaryCountsDto,
   AuthSessionDto,
-  HealthProfileInfoDto
+  HealthProfileInfoDto,
 };

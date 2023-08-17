@@ -510,6 +510,7 @@
   "SeatCount": "عدد المقاعد",
   "PriceType": "نوع الدفع",
   "PlaceName": "اسم المكان",
+  "CheckInName": "التواجد",
   "PlaceDescription": "وصف المكان",
   "CreateExercise": "إنشاء تمرين",
   "Sessions": "الجلسات",
@@ -1304,10 +1305,9 @@
   "streetAddress": "الشارع",
   "taxFee": "الضريبه",
   "shippingFee": "مصاريف الشحن",
-  "WithdrawRequests":"النقديه وسحب الاموال",
-  "Approve":"موافق",
-  "AreYouSureYouWantToApproveThisWithdrawRequest":"هل انت متاكد من الموافقه على هذا الطلب",
-  "ClientID":"رقم العميل",
-  "TotalAmount":"اجمالى القيمه"
-
+  "WithdrawRequests": "النقديه وسحب الاموال",
+  "Approve": "موافق",
+  "AreYouSureYouWantToApproveThisWithdrawRequest": "هل انت متاكد من الموافقه على هذا الطلب",
+  "ClientID": "رقم العميل",
+  "TotalAmount": "اجمالى القيمه"
 }

@@ -13,7 +13,11 @@ import type {
   LifeDreamDto,
   MomentDto,
   PositiveHabitDto,
-  ToDoTaskDto, TotalFriendsDto, SalaryCountsDto, AuthSessionDto, HealthProfileInfoDto
+  ToDoTaskDto,
+  TotalFriendsDto,
+  SalaryCountsDto,
+  AuthSessionDto,
+  HealthProfileInfoDto,
 } from '../services/clients/dto/clientDto';
 import clientsService from '../services/clients/clientsService';
 import type { CreateClientDto } from '../services/clients/dto/createClientDto';
@@ -22,7 +26,6 @@ import { ChallengeDto } from '../services/challenges/dto';
 import type { EventDto } from '../services/events/dto/eventDto';
 import moment from 'moment';
 //import { SalaryCountDto } from '../services/salaryCount/dto/salaryCountDto';
-
 
 class ClientStore extends StoreBase {
   @observable detailsModalLoading: boolean = false;
@@ -34,6 +37,12 @@ class ClientStore extends StoreBase {
   @observable momentsTotalCount: number = 0;
   @observable isGettingMomentData = false;
   @observable momentModel?: MomentDto = undefined;
+
+  @observable checkins: Array<MomentDto> = [];
+  @observable loadingCheckins = true;
+  @observable checkinsTotalCount: number = 0;
+  // @observable isGettingCheckinsData = false;
+  // @observable checkinsModel?: MomentDto = undefined;
 
   @observable dishes: Array<any> = [];
   @observable loadingDishes = true;
@@ -54,11 +63,10 @@ class ClientStore extends StoreBase {
   @observable SalaryCounts: Array<SalaryCountsDto> = [];
   @observable loadingSalaryCounts = true;
   @observable SalaryCountsTotalCount: number = 0;
-  
+
   @observable AuthSession: Array<AuthSessionDto> = [];
   @observable loadingAuthSession = false;
   @observable AuthSessionTotalCount: number = 0;
-
 
   @observable habits: Array<PositiveHabitDto> = [];
   @observable loadingHabits = true;
@@ -94,7 +102,7 @@ class ClientStore extends StoreBase {
   @observable totalCount: number = 0;
 
   @observable clientModel?: ClientDto = undefined;
-  
+
   @observable healthQuestionsLoading: boolean = false;
   @observable healthQuestions: Array<HealthProfileAnswerDto> = [];
   @observable healthProfileInfoLoading: boolean = false;
@@ -103,7 +111,7 @@ class ClientStore extends StoreBase {
 
   @observable isActiveFilter?: boolean = undefined;
   @observable keyword?: string = undefined;
-  @observable filterChosenDate: number  = 0
+  @observable filterChosenDate: number = 0;
   @observable filterFromDate?: string = undefined;
   @observable filterToDate?: string = undefined;
 
@@ -120,7 +128,7 @@ class ClientStore extends StoreBase {
           skipCount: this.skipCount,
           maxResultCount: this.maxResultCount,
           keyword: this.keyword,
-          Sorting:'CreationTime',
+          Sorting: 'CreationTime',
           isActive: this.isActiveFilter,
           filterChosenDate: this.filterChosenDate,
           filterFromDate: this.filterFromDate,
@@ -177,7 +185,7 @@ class ClientStore extends StoreBase {
       }
     );
   }
-  
+
   @action
   async getHealthProfileInfo(input: EntityDto) {
     await this.wrapExecutionAsync(
@@ -254,7 +262,6 @@ class ClientStore extends StoreBase {
 
   @action
   async getEvent(input: EntityDto) {
-
     let event = this.events.find((c) => c.id === input.id);
     if (event !== undefined) {
       this.eventModel = {
@@ -328,7 +335,7 @@ class ClientStore extends StoreBase {
         goldenTotalSeats: event.goldenTotalSeats,
         platinumTotalSeats: event.platinumTotalSeats,
         vipTotalSeats: event.vipTotalSeats,
-        appearInAppDate:event.appearInAppDate
+        appearInAppDate: event.appearInAppDate,
       };
     }
   }
@@ -510,7 +517,6 @@ class ClientStore extends StoreBase {
     );
   }
 
-
   @action
   async getTotalFriends(input: ClientPagedFilterRequest) {
     await this.wrapExecutionAsync(
@@ -552,7 +558,7 @@ class ClientStore extends StoreBase {
       }
     );
   }
-  
+
   @action
   async getAuthSession(input: ClientPagedFilterRequest) {
     await this.wrapExecutionAsync(
@@ -561,10 +567,13 @@ class ClientStore extends StoreBase {
         let result = await clientsService.getAuthSession(input.clientId!);
         result.items = result.items.map((item) => {
           let temp = item;
-          temp.loginDate = moment(item.loginDate).format("DD/MM/YYYY HH:mm");
-          temp.logoutDate = item.logoutDate.indexOf("0001-01-01") > -1 ? "" : moment(item.logoutDate).format("DD/MM/YYYY HH:mm");
-          temp.daysDuration = item.daysDuration ? Number(item.daysDuration?.toFixed(2)):0;
-          temp.hoursDuration = item.daysDuration ? Number(item.hoursDuration?.toFixed(2)):0;
+          temp.loginDate = moment(item.loginDate).format('DD/MM/YYYY HH:mm');
+          temp.logoutDate =
+            item.logoutDate.indexOf('0001-01-01') > -1
+              ? ''
+              : moment(item.logoutDate).format('DD/MM/YYYY HH:mm');
+          temp.daysDuration = item.daysDuration ? Number(item.daysDuration?.toFixed(2)) : 0;
+          temp.hoursDuration = item.daysDuration ? Number(item.hoursDuration?.toFixed(2)) : 0;
           return temp;
         });
         this.AuthSession = result.items;
@@ -578,7 +587,6 @@ class ClientStore extends StoreBase {
       }
     );
   }
-
 
   @action
   async createClient(input: CreateClientDto) {
@@ -701,6 +709,32 @@ class ClientStore extends StoreBase {
       },
       () => {
         this.loadingMoments = false;
+      }
+    );
+  }
+
+  @action
+  async getCheckins(input: ClientPagedFilterRequest) {
+    await this.wrapExecutionAsync(
+      async () => {
+        let result = await clientsService.getCheckIns({
+          skipCount: input.skipCount,
+          maxResultCount: input.maxResultCount,
+          clientId: input.clientId,
+          // keyword: this.keyword,
+          // isActive: this.isActiveFilter,
+          // filterChosenDate: input.filterChosenDate,
+          filterFromDate: input.filterFromDate,
+          filterToDate: input.filterToDate,
+        });
+        this.checkins = result.items;
+        this.checkinsTotalCount = result.totalCount;
+      },
+      () => {
+        this.loadingCheckins = true;
+      },
+      () => {
+        this.loadingCheckins = false;
       }
     );
   }
