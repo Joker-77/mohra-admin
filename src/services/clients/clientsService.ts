@@ -23,6 +23,7 @@ import { UpdateClientDto } from './dto/updateClientDto';
 import { LiteEntityDto } from '../dto/liteEntityDto';
 import { ChallengeDto } from '../challenges/dto';
 import { EventDto } from '../events/dto/eventDto';
+import { ChangePointsDto } from './dto/changePointsDto';
 
 class ClientsService {
   public async getAll(input: AdminPagedFilterRequest): Promise<PagedResultDto<ClientDto>> {
@@ -43,9 +44,9 @@ class ClientsService {
   public async getAllLite(input?: AdminPagedFilterRequest): Promise<PagedResultDto<LiteEntityDto>> {
     let result = await http.get('api/services/app/Client/GetAllLite', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
-        isActive: input?.isActive,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
+        isActive: input ?.isActive,
       },
     });
     return result.data.result;
@@ -96,8 +97,8 @@ class ClientsService {
   ): Promise<PagedResultDto<ChallengeDto>> {
     let result = await http.get('api/services/app/Challenge/GetClientChallenges', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -107,8 +108,8 @@ class ClientsService {
   public async getEvents(input: ClientPagedFilterRequest): Promise<PagedResultDto<EventDto>> {
     let result = await http.get('api/services/app/Client/GetUserEvents', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -118,8 +119,8 @@ class ClientsService {
   public async getToDoList(input: ClientPagedFilterRequest): Promise<PagedResultDto<ToDoTaskDto>> {
     let result = await http.get('api/services/app/Client/GetUserToDoList', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -131,8 +132,8 @@ class ClientsService {
   ): Promise<PagedResultDto<AppointmentDto>> {
     let result = await http.get('api/services/app/Client/GetUserAppointementList', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -144,8 +145,8 @@ class ClientsService {
   ): Promise<PagedResultDto<PositiveHabitDto>> {
     let result = await http.get('api/services/app/Client/GetUserLifePositiveHabitsList', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -157,8 +158,8 @@ class ClientsService {
   ): Promise<PagedResultDto<LifeDreamDto>> {
     let result = await http.get('api/services/app/Client/GetUserLifeDreamList', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -170,8 +171,8 @@ class ClientsService {
   ): Promise<PagedResultDto<TotalFriendsDto>> {
     let result = await http.get('api/services/app/Client/GetFriendsList', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -183,8 +184,8 @@ class ClientsService {
   ): Promise<PagedResultDto<SalaryCountsDto>> {
     let result = await http.get('api/services/app/TimeTable/GetAllTimeTableForClient', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -199,8 +200,8 @@ class ClientsService {
   public async getDishes(input: ClientPagedFilterRequest): Promise<PagedResultDto<any>> {
     let result = await http.get('api/services/app/Client/GetUserDailyDishes', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -211,8 +212,8 @@ class ClientsService {
   ): Promise<PagedResultDto<DailySessionDto>> {
     let result = await http.get('api/services/app/DailySession/GetAll', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -221,8 +222,8 @@ class ClientsService {
   public async getMoments(input: ClientPagedFilterRequest): Promise<PagedResultDto<MomentDto>> {
     let result = await http.get('api/services/app/Client/GetUserMoments', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
       },
     });
@@ -232,8 +233,8 @@ class ClientsService {
   public async getCheckIns(input: ClientPagedFilterRequest): Promise<PagedResultDto<MomentDto>> {
     let result = await http.get('api/services/app/Client/GetUserHistoryCheckIns', {
       params: {
-        skipCount: input?.skipCount,
-        maxResultCount: input?.maxResultCount,
+        skipCount: input ?.skipCount,
+        maxResultCount: input ?.maxResultCount,
         clientId: input.clientId,
         // filterChosenDate: input.filterChosenDate,
         FirstDate: input.filterFromDate,
@@ -245,6 +246,15 @@ class ClientsService {
 
   public async deleteClient(input: EntityDto) {
     let result = await http.delete('api/services/app/Client/Delete', { params: { id: input.id } });
+    return result.data;
+  }
+  public async getClientPoints(input: EntityDto) {
+    let result = await http.get('api/services/app/Client/GetClientPoints', { params: { id: input.id } });
+    return result.data;
+  }
+
+  public async changePoints(input: ChangePointsDto) {
+    let result = await http.post('api/services/app/Client/ChangePoints', input);
     return result.data;
   }
 }

@@ -5,19 +5,19 @@ import { notifySuccess } from '../lib/notifications';
 import userService from '../services/user/userService';
 import type {
   AnswerOutPutDto,
-  AppointmentDto,
-  ClientDto,
-  ClientPagedFilterRequest,
-  DailySessionDto,
-  HealthProfileAnswerDto,
-  LifeDreamDto,
-  MomentDto,
-  PositiveHabitDto,
-  ToDoTaskDto,
-  TotalFriendsDto,
-  SalaryCountsDto,
-  AuthSessionDto,
-  HealthProfileInfoDto,
+    AppointmentDto,
+    ClientDto,
+    ClientPagedFilterRequest,
+    DailySessionDto,
+    HealthProfileAnswerDto,
+    LifeDreamDto,
+    MomentDto,
+    PositiveHabitDto,
+    ToDoTaskDto,
+    TotalFriendsDto,
+    SalaryCountsDto,
+    AuthSessionDto,
+    HealthProfileInfoDto,
 } from '../services/clients/dto/clientDto';
 import clientsService from '../services/clients/clientsService';
 import type { CreateClientDto } from '../services/clients/dto/createClientDto';
@@ -26,6 +26,7 @@ import { ChallengeDto } from '../services/challenges/dto';
 import type { EventDto } from '../services/events/dto/eventDto';
 import moment from 'moment';
 //import { SalaryCountDto } from '../services/salaryCount/dto/salaryCountDto';
+import { ChangePointsDto } from '../services/clients/dto/changePointsDto';
 
 class ClientStore extends StoreBase {
   @observable detailsModalLoading: boolean = false;
@@ -115,9 +116,20 @@ class ClientStore extends StoreBase {
   @observable filterFromDate?: string = undefined;
   @observable filterToDate?: string = undefined;
 
+  // points
+  @observable changePointsModalLoading: boolean = false;
+  @observable loadingPoints: boolean = true;
+  @observable changePointsModel?: ChangePointsDto = undefined;
+  @observable isSubmittingPoints = false;
+
   @action
   setDetailsModalLoading(_loading: boolean) {
     this.detailsModalLoading = _loading;
+  }
+
+  @action
+  setPointsModalLoading(_loading: boolean) {
+    this.changePointsModalLoading = _loading;
   }
 
   @action
@@ -572,8 +584,8 @@ class ClientStore extends StoreBase {
             item.logoutDate.indexOf('0001-01-01') > -1
               ? ''
               : moment(item.logoutDate).format('DD/MM/YYYY HH:mm');
-          temp.daysDuration = item.daysDuration ? Number(item.daysDuration?.toFixed(2)) : 0;
-          temp.hoursDuration = item.daysDuration ? Number(item.hoursDuration?.toFixed(2)) : 0;
+          temp.daysDuration = item.daysDuration ? Number(item.daysDuration ?.toFixed(2)) : 0;
+          temp.hoursDuration = item.daysDuration ? Number(item.hoursDuration ?.toFixed(2)) : 0;
           return temp;
         });
         this.AuthSession = result.items;
@@ -768,6 +780,43 @@ class ClientStore extends StoreBase {
         videos: moment.videos,
       };
     }
+  }
+
+  @action
+  async getPoints(input: EntityDto) {
+    await this.wrapExecutionAsync(
+      async () => {
+        let result = await clientsService.getClientPoints(input);
+        console.log("result", result);
+        let payload: ChangePointsDto = {
+          id: input.id,
+          points: result.result.points
+        };
+        this.changePointsModel = payload;
+      },
+      () => {
+        this.loadingPoints = true;
+      },
+      () => {
+        this.loadingPoints = false;
+      }
+    )
+  }
+
+  @action
+  async changePoints(input: ChangePointsDto) {
+    await this.wrapExecutionAsync(
+      async () => {
+        await clientsService.changePoints(input);
+        notifySuccess();
+      },
+      () => {
+        this.isSubmittingPoints = true;
+      },
+      () => {
+        this.isSubmittingPoints = false;
+      }
+    );
   }
 }
 

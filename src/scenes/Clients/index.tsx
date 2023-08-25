@@ -33,6 +33,7 @@ import {
   DownOutlined,
   FileExcelOutlined,
   DeleteOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import { FormInstance } from 'antd/lib/form';
 import ClientStore from '../../stores/clientStore';
@@ -51,6 +52,8 @@ import { popupConfirm } from '../../lib/popupMessages';
 import Highlighter from 'react-highlight-words';
 import { GenderType, UserStatus } from '../../lib/types';
 import ExcellentExport from 'excellentexport';
+import ChangePointsModal from './components/changePointsModal';
+import { ChangePointsDto } from '../../services/clients/dto/changePointsDto';
 
 const { RangePicker } = DatePicker;
 export interface IClientsProps {
@@ -69,7 +72,10 @@ export interface IClientsState {
   clientModalVisible: boolean;
   resetPasswordModalVisible: boolean;
   clientDetailsModalVisible: boolean;
+  changePointsModalVisible: boolean;
   clientId: number;
+  userName: string;
+  clientPoints: number;
   clientsModalId: number;
   clientsModalType: string;
   meta: {
@@ -105,6 +111,7 @@ declare var abp: any;
 export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
   formRef = React.createRef<FormInstance>();
   resetPasswordFormRef = React.createRef<FormInstance>();
+  changePointsFormRef = React.createRef<FormInstance>();
   currentUser: any = undefined;
   searchInput: any = null;
   state = {
@@ -113,7 +120,10 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
     clientModalVisible: false,
     resetPasswordModalVisible: false,
     clientDetailsModalVisible: false,
+    changePointsModalVisible: false,
     clientId: 0,
+    userName: "",
+    clientPoints: 0,
     clientsModalId: 0,
     clientsModalType: 'create',
     meta: {
@@ -221,8 +231,8 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
           textToHighlight={text ? text.toString() : ''}
         />
       ) : (
-        text
-      ),
+          text
+        ),
   });
 
   async componentDidMount() {
@@ -270,13 +280,14 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
     this.setState({ clientId: clientId, resetPasswordModalVisible: true });
   }
 
+
   async openClientDetailsModal(entityDto: EntityDto) {
     // await this.props.clientStore!.getClient(entityDto);
     this.setState({
       clientDetailsModalVisible: !this.state.clientDetailsModalVisible,
       clientsModalId: entityDto.id,
     });
-    this.props.clientStore?.setDetailsModalLoading(true);
+    this.props.clientStore ?.setDetailsModalLoading(true);
     await Promise.all([
       this.props.clientStore!.getClient(entityDto),
       this.props.clientStore!.getAuthSession({
@@ -351,10 +362,10 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
       }),
     ])
       .then(() => {
-        this.props.clientStore?.setDetailsModalLoading(false);
+        this.props.clientStore ?.setDetailsModalLoading(false);
       })
       .catch(() => {
-        this.props.clientStore?.setDetailsModalLoading(false);
+        this.props.clientStore ?.setDetailsModalLoading(false);
       });
   }
   createOrUpdateClient = () => {
@@ -372,6 +383,43 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
     });
   };
 
+  async openChangePointsModal(clientId: number, name: string) {
+    this.setState({
+      changePointsModalVisible: !this.state.changePointsModalVisible,
+      clientId: clientId,
+      userName: name,
+    });
+    this.props.clientStore!.setPointsModalLoading(true);
+    await Promise.all([this.props.clientStore!.getPoints({ id: clientId })]).then(() => {
+      this.props.clientStore ?.setPointsModalLoading(false)
+      }).catch(() => {
+        this.props.clientStore ?.setPointsModalLoading(false)
+      });
+  }
+
+  changeClientPoints = () => {
+    const form = this.changePointsFormRef.current;
+    form!.validateFields().then(async (values: any) => {
+      values.userId = this.state.clientId;
+      const changePointsObj: ChangePointsDto = {
+        id: values.userId,
+        points: values.points
+      };
+      console.log(changePointsObj);
+      await this.props.clientStore!.changePoints(changePointsObj as ChangePointsDto);
+      this.setState({ changePointsModalVisible: false });
+      form!.resetFields();
+      // try {
+      //   await clientsService.changePoints(changePointsObj);
+      //   form!.resetFields();
+      //   this.props.onClose();
+      //   // notifySuccess();
+      //   this.setState({ isSubmitting: false });
+      // } catch {
+      //   this.setState({ isSubmitting: false });
+      // }
+    });
+  }
   onSwitchClientActivation = async (client: ClientDto) => {
     popupConfirm(
       async () => {
@@ -492,7 +540,14 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
               />
             </Tooltip>
           ) : null}
-
+          {this.state.permisssionsGranted.update ? (
+            <Tooltip title={L('ChangePoints')}>
+              <StarOutlined
+                className="action-icon"
+                onClick={() => this.openChangePointsModal(item.id, !!item.fullName ? item.fullName : "")}
+              />
+            </Tooltip>
+          ) : null}
           {this.state.permisssionsGranted.delete ? (
             <Tooltip title={L('Delete')}>
               <DeleteOutlined
@@ -620,16 +675,16 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                       {client.gender === GenderType.Female
                         ? L('Female')
                         : client.gender === GenderType.Male
-                        ? L('Male')
-                        : L('Not Selected')}
+                          ? L('Male')
+                          : L('Not Selected')}
                     </td>
                     <td>{client.hasAvatar ? L('Yes') : L('No')}</td>
                     <td>{client.city ? client.city.text : L('NotAvailable')}</td>
                     <td>
                       {client.addresses && client.addresses.length > 0
                         ? client.addresses.map((address: AddressDto) =>
-                            client.city ? client.city.text + ', ' : '' + +address.street + ' - '
-                          )
+                          client.city ? client.city.text + ', ' : '' + +address.street + ' - '
+                        )
                         : L('NotAvailable')}
                     </td>
                     <td>{moment(client.birthDate).format(timingHelper.defaultDateFormat)}</td>
@@ -643,8 +698,8 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                       {client.status === UserStatus.Inactive
                         ? L('Inactive')
                         : client.status === UserStatus.Active
-                        ? L('Active')
-                        : L('Blocked')}
+                          ? L('Active')
+                          : L('Blocked')}
                     </td>
                     <td>{moment(client.creationTime).format(timingHelper.defaultDateFormat)}</td>
                   </tr>
@@ -783,8 +838,8 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
               expanded ? (
                 <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
               ) : (
-                <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-              ),
+                  <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                ),
             expandedRowRender: (record) => (
               <p className="expanded-row" style={{ margin: 0 }}>
                 <span>
@@ -803,7 +858,7 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
                 </span>
 
                 <span>
-                  <b>{L('City')}:</b> {record.city ? record.city?.text : L('NotAvailable')}
+                  <b>{L('City')}:</b> {record.city ? record.city ?.text : L('NotAvailable')}
                 </span>
 
                 <span>
@@ -840,7 +895,20 @@ export class Clients extends AppComponentBase<IClientsProps, IClientsState> {
             })
           }
         />
-
+        <ChangePointsModal
+          formRef={this.changePointsFormRef}
+          isOpen={this.state.changePointsModalVisible}
+          userId={this.state.clientId}
+          userName={this.state.userName}
+          clientPoints={this.state.clientPoints}
+          onOk={this.changeClientPoints}
+          isSubmittingPoints={this.props.clientStore!.isSubmittingPoints}
+          onClose={() =>
+            this.setState({
+              changePointsModalVisible: false,
+            })
+          }
+        />
         <ClientDetailsModal
           visible={this.state.clientDetailsModalVisible}
           onCancel={() =>

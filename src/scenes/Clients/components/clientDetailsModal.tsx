@@ -532,6 +532,31 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
         return hoursDuration ? hoursToMonthDaysHoursMinutes(hoursDuration) : L('NotAvailable');
       },
     },
+    {
+      title: L('LogInAddress'),
+      dataIndex: 'addressForLogin',
+      key: 'addressForLogin',
+    },
+    {
+      title: L('CoordinatesLongLogin'),
+      dataIndex: 'longForLogin',
+      key: 'longForLogin',
+    },
+    {
+      title: L('CoordinatesLatLogin'),
+      dataIndex: 'latForLogin',
+      key: 'latForLogin',
+    },
+    {
+      title: L('CoordinatesLongLogout'),
+      dataIndex: 'longForLogout',
+      key: 'longForLogout',
+    },
+    {
+      title: L('CoordinatesLatLogout'),
+      dataIndex: 'latForLogout',
+      key: 'latForLogout',
+    }
   ];
 
   totalFriendsTableColumns = [
@@ -677,8 +702,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             {priority === ToDoPriority.Important
               ? L('Important')
               : priority === ToDoPriority.VeryImportant
-              ? L('VeryImportant')
-              : L('Normal')}
+                ? L('VeryImportant')
+                : L('Normal')}
           </Tag>
         );
       },
@@ -700,8 +725,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
           {isAchieved ? (
             <Tag color="green">{L('Achieved')}</Tag>
           ) : (
-            <Tag color="red">{L('NotAchieved')}</Tag>
-          )}
+              <Tag color="red">{L('NotAchieved')}</Tag>
+            )}
         </>
       ),
     },
@@ -743,12 +768,12 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             {currentStep === StepType.Joined
               ? L('Joined')
               : currentStep === StepType.NotJoined
-              ? L('NotJoined')
-              : currentStep === StepType.InviteFriends
-              ? L('InviteFriends')
-              : currentStep === StepType.VerifiedMoment
-              ? L('VerifiedMoment')
-              : L('ClaimRewards')}
+                ? L('NotJoined')
+                : currentStep === StepType.InviteFriends
+                  ? L('InviteFriends')
+                  : currentStep === StepType.VerifiedMoment
+                    ? L('VerifiedMoment')
+                    : L('ClaimRewards')}
           </Tag>
         );
       },
@@ -770,8 +795,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
           {isActive ? (
             <Tag color="green">{L('Active')}</Tag>
           ) : (
-            <Tag color="red">{L('Inactive')}</Tag>
-          )}
+              <Tag color="red">{L('Inactive')}</Tag>
+            )}
         </>
       ),
     },
@@ -831,10 +856,10 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             {type === DishType.Dinner
               ? L('Dinner')
               : type === DishType.Launch
-              ? L('Launch')
-              : type === DishType.Snak
-              ? L('Snak')
-              : L('Breakfast')}
+                ? L('Launch')
+                : type === DishType.Snak
+                  ? L('Snak')
+                  : L('Breakfast')}
           </Tag>
         );
       },
@@ -1496,82 +1521,82 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
     const { events } = this.props.clientStore!;
     const challengePagination = {
       ...this.challengePaginationOptions,
-      total: this.props.clientStore?.challengesTotalCount,
+      total: this.props.clientStore ?.challengesTotalCount,
       current: this.state.challengeMeta.page,
       pageSize: this.state.challengeMeta.pageSize,
     };
     const sessionPagination = {
       ...this.sessionsPaginationOptions,
-      total: this.props.clientStore?.sessionsTotalCount,
+      total: this.props.clientStore ?.sessionsTotalCount,
       current: this.state.sessionMeta.page,
       pageSize: this.state.sessionMeta.pageSize,
     };
     const momentPagination = {
       ...this.momentPaginationOptions,
-      total: this.props.clientStore?.momentsTotalCount,
+      total: this.props.clientStore ?.momentsTotalCount,
       current: this.state.momentsMeta.page,
       pageSize: this.state.momentsMeta.pageSize,
     };
     const checkinsPagination = {
       ...this.checkinsPaginationOptions,
-      total: this.props.clientStore?.checkinsTotalCount,
+      total: this.props.clientStore ?.checkinsTotalCount,
       current: this.state.checkinsMeta.page,
       pageSize: this.state.checkinsMeta.pageSize,
     };
     const dishesPagination = {
       ...this.dishesPaginationOptions,
-      total: this.props.clientStore?.dishesTotalCount,
+      total: this.props.clientStore ?.dishesTotalCount,
       current: this.state.dishesMeta.page,
       pageSize: this.state.dishesMeta.pageSize,
     };
     const habitsPagination = {
       ...this.habitsPaginationOptions,
-      total: this.props.clientStore?.habitsTotalCount,
+      total: this.props.clientStore ?.habitsTotalCount,
       current: this.state.habitsMeta.page,
       pageSize: this.state.habitsMeta.pageSize,
     };
     const eventPagination = {
       ...this.eventPaginationOptions,
-      total: this.props.clientStore?.eventsTotalCount,
+      total: this.props.clientStore ?.eventsTotalCount,
       current: this.state.eventsMeta.page,
       pageSize: this.state.eventsMeta.pageSize,
     };
     const toDoPagination = {
       ...this.toDoPaginationOptions,
-      total: this.props.clientStore?.toDoListTotalCount,
+      total: this.props.clientStore ?.toDoListTotalCount,
       current: this.state.toDoMeta.page,
       pageSize: this.state.toDoMeta.pageSize,
     };
     const appointmentPagination = {
       ...this.appointmentTableColumns,
-      total: this.props.clientStore?.appointmentTotalCount,
+      total: this.props.clientStore ?.appointmentTotalCount,
       current: this.state.appointmentsMeta.page,
       pageSize: this.state.appointmentsMeta.pageSize,
     };
     const dreamsPagination = {
       ...this.dreamsPaginationOptions,
-      total: this.props.clientStore?.dreamsTotalCount,
+      total: this.props.clientStore ?.dreamsTotalCount,
       current: this.state.dreamsMeta.page,
       pageSize: this.state.dreamsMeta.pageSize,
     };
 
     const totalFriendsPagination = {
       ...this.FriendaPaginationOptions,
-      total: this.props.clientStore?.TotalFriendsTotalCount,
+      total: this.props.clientStore ?.TotalFriendsTotalCount,
       current: this.state.FriendsMeta.page,
       pageSize: this.state.FriendsMeta.pageSize,
     };
 
     const salaryCountsPagination = {
       ...this.SalaryCountsPaginationOptions,
-      total: this.props.clientStore?.SalaryCountsTotalCount,
+      total: this.props.clientStore ?.SalaryCountsTotalCount,
       current: this.state.SalaryCountsMeta.page,
       pageSize: this.state.SalaryCountsMeta.pageSize,
     };
 
     const authSessionPagination = {
       ...this.AuthSessionPaginationOptions,
-      total: this.props.clientStore?.AuthSessionTotalCount,
+      total: this.props.clientStore ?.AuthSessionTotalCount,
       current: this.state.AuthSessionMeta.page,
       pageSize: this.state.AuthSessionMeta.pageSize,
     };
@@ -1588,7 +1613,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
         className={localization.isRTL() ? 'rtl-modal' : 'ltr-modal'}
         footer={[
           <a
-            download={`client-${clientModel?.id}.xlsx`}
+            download={`client-${clientModel ?.id}.xlsx`}
             className="ant-btn ant-btn-default export-btn"
             style={{ float: localization.isRTL() ? 'right' : 'left' }}
             id="export2"
@@ -1663,8 +1688,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <span className="detail-value">
                     {clientModel !== undefined
                       ? (clientModel.countryCode !== null ? clientModel.countryCode : '') +
-                        '' +
-                        clientModel.phoneNumber
+                      '' +
+                      clientModel.phoneNumber
                       : undefined}
                   </span>
                 </div>
@@ -1672,8 +1697,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <span className="detail-label">{L('City')}</span>
                   <span className="detail-value">
                     {clientModel !== undefined && clientModel.city
-                      ? clientModel.city?.text
-                      : L('NotAvailable')}
+                      ? clientModel.city ?.text
+                        : L('NotAvailable')}
                   </span>
                 </div>
                 <div className="detail-wrapper">
@@ -1699,8 +1724,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                         {clientModel.gender === GenderType.Female
                           ? L('Female')
                           : clientModel.gender === GenderType.Male
-                          ? L('Male')
-                          : L('Not Selected')}
+                            ? L('Male')
+                            : L('Not Selected')}
                       </Tag>
                     ) : undefined}
                   </span>
@@ -1716,18 +1741,18 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                         {clientModel.hasAvatar ? L('Yes') : L('No')}
                       </Tag>
                     ) : (
-                      L('NotAvailable')
-                    )}
+                        L('NotAvailable')
+                      )}
                     {clientModel !== undefined && clientModel.avatar ? (
                       <Avatar shape="square" size={90} src={clientModel.avatar.avatarUrl} />
                     ) : (
-                      ''
-                    )}
+                        ''
+                      )}
                     {clientModel !== undefined && clientModel.avatar ? (
                       <Avatar shape="square" size={130} src={clientModel.avatar.image} />
                     ) : (
-                      ''
-                    )}
+                        ''
+                      )}
                   </span>
                 </div>
                 <div className="detail-wrapper">
@@ -1740,13 +1765,13 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <span className="detail-label">{L('Addresses')}</span>
                   <span className="detail-value">
                     {clientModel !== undefined &&
-                    clientModel.addresses &&
-                    clientModel.addresses.length > 0
+                      clientModel.addresses &&
+                      clientModel.addresses.length > 0
                       ? clientModel.addresses.map((address: AddressDto, idx) => (
-                          <Tag className="ant-tag-disable-pointer" color={'default'} key={idx}>
-                            {clientModel.city ? clientModel.city.text + ', ' : '' + address.street}
-                          </Tag>
-                        ))
+                        <Tag className="ant-tag-disable-pointer" color={'default'} key={idx}>
+                          {clientModel.city ? clientModel.city.text + ', ' : '' + address.street}
+                        </Tag>
+                      ))
                       : L('NotAvailable')}
                   </span>
                 </div>
@@ -1781,8 +1806,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                       ? clientModel.devicedType === 2
                         ? 'IOS'
                         : clientModel.devicedType === 1
-                        ? 'Android'
-                        : 'Unknown'
+                          ? 'Android'
+                          : 'Unknown'
                       : undefined}
                   </span>
                 </div>
@@ -1804,55 +1829,55 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               )}
               <h3>{L('HealthProfileQuestions')}</h3>
               {this.props.clientStore.healthQuestions &&
-              this.props.clientStore.healthQuestions.length > 0 ? (
-                <Collapse accordion>
-                  {this.props.clientStore.healthQuestions.map(
-                    (item: HealthProfileAnswerDto, index: number) => {
-                      return (
-                        <Collapse.Panel header={item.question} key={index}>
-                          <p>{item.answer}</p>
-                        </Collapse.Panel>
-                      );
-                    }
-                  )}
-                </Collapse>
-              ) : (
-                <p>{L('NotAvailable')}</p>
-              )}
+                this.props.clientStore.healthQuestions.length > 0 ? (
+                  <Collapse accordion>
+                    {this.props.clientStore.healthQuestions.map(
+                      (item: HealthProfileAnswerDto, index: number) => {
+                        return (
+                          <Collapse.Panel header={item.question} key={index}>
+                            <p>{item.answer}</p>
+                          </Collapse.Panel>
+                        );
+                      }
+                    )}
+                  </Collapse>
+                ) : (
+                  <p>{L('NotAvailable')}</p>
+                )}
 
               {healthProfileInfo && (
                 <div className="details-wrapper health-profile-info">
                   <div className="detail-wrapper">
                     <span className="detail-label">{L('FirstName')}</span>
                     <span className="detail-value">
-                      {clientModel !== undefined ? clientModel.fullName?.split(' ')[0] : undefined}
+                      {clientModel !== undefined ? clientModel.fullName ?.split(' ')[0] : undefined}
                     </span>
                   </div>
                   <div className="detail-wrapper">
                     <span className="detail-label">{L('LastName')}</span>
                     <span className="detail-value">
-                      {clientModel !== undefined ? clientModel.fullName?.split(' ')[1] : undefined}
+                      {clientModel !== undefined ? clientModel.fullName ?.split(' ')[1] : undefined}
                     </span>
                   </div>{' '}
                   <div className="detail-wrapper">
                     <span className="detail-label">{L('Gender')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? healthProfileInfo.healthProfile?.gender == 1
+                        ? healthProfileInfo.healthProfile ?.gender == 1
                           ? 'Male'
-                          : healthProfileInfo.healthProfile?.gender === 2
-                          ? 'Female'
-                          : 'Other'
-                        : undefined}
+                          : healthProfileInfo.healthProfile ?.gender === 2
+                            ? 'Female'
+                            : 'Other'
+                            : undefined}
                     </span>
                   </div>
                   <div className="detail-wrapper">
                     <span className="detail-label">{L('BirthDate')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? moment(healthProfileInfo.healthProfile?.birthDate).format(
-                            timingHelper.defaultDateFormat
-                          )
+                        ? moment(healthProfileInfo.healthProfile ?.birthDate).format(
+                          timingHelper.defaultDateFormat
+                        )
                         : undefined}
                     </span>
                   </div>
@@ -1860,19 +1885,19 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     <span className="detail-label">{L('HealthCondition')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? healthProfileInfo.healthProfile?.healthSituation === 0
+                        ? healthProfileInfo.healthProfile ?.healthSituation === 0
                           ? 'Healthy'
-                          : healthProfileInfo.healthProfile?.healthSituation === 1
-                          ? 'VeryHealthy'
-                          : 'Normal'
-                        : undefined}
+                          : healthProfileInfo.healthProfile ?.healthSituation === 1
+                            ? 'VeryHealthy'
+                            : 'Normal'
+                            : undefined}
                     </span>
                   </div>
                   <div className="detail-wrapper">
                     <span className="detail-label">{L('Height')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? `${healthProfileInfo.healthProfile?.length} cm`
+                        ? `${healthProfileInfo.healthProfile ?.length} cm`
                         : undefined}
                     </span>
                   </div>
@@ -1880,7 +1905,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     <span className="detail-label">{L('Weight')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? `${healthProfileInfo.healthProfile?.weight} kg`
+                        ? `${healthProfileInfo.healthProfile ?.weight} kg`
                         : undefined}
                     </span>
                   </div>
@@ -1888,7 +1913,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     <span className="detail-label">{L('BMI')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? `${healthProfileInfo.healthProfile?.bmi}`
+                        ? `${healthProfileInfo.healthProfile ?.bmi}`
                         : undefined}
                     </span>
                   </div>
@@ -1896,7 +1921,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     <span className="detail-label">{L('WeightGoal')}</span>
                     <span className="detail-value">
                       {healthProfileInfo !== undefined
-                        ? `${healthProfileInfo.healthProfile?.weightGoal} kg`
+                        ? `${healthProfileInfo.healthProfile ?.weightGoal} kg`
                         : undefined}
                     </span>
                   </div>
@@ -1907,21 +1932,21 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <br />
               <h3>{L('PersonalityQuestions2')}</h3>
               {this.props.clientStore.personalityQuestions &&
-              this.props.clientStore.personalityQuestions.length > 0 ? (
-                <Collapse accordion>
-                  {this.props.clientStore.personalityQuestions.map(
-                    (item: AnswerOutPutDto, index: number) => {
-                      return (
-                        <Collapse.Panel header={item.question} key={index}>
-                          <p>{item.choice}</p>
-                        </Collapse.Panel>
-                      );
-                    }
-                  )}
-                </Collapse>
-              ) : (
-                <p>{L('NotAvailable')}</p>
-              )}
+                this.props.clientStore.personalityQuestions.length > 0 ? (
+                  <Collapse accordion>
+                    {this.props.clientStore.personalityQuestions.map(
+                      (item: AnswerOutPutDto, index: number) => {
+                        return (
+                          <Collapse.Panel header={item.question} key={index}>
+                            <p>{item.choice}</p>
+                          </Collapse.Panel>
+                        );
+                      }
+                    )}
+                  </Collapse>
+                ) : (
+                  <p>{L('NotAvailable')}</p>
+                )}
             </Tabs.TabPane>
             <Tabs.TabPane
               tab={
@@ -1944,8 +1969,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   expandedRowRender: (record) => (
                     <p className="expanded-row" style={{ margin: 0 }}>
                       <span>
@@ -1966,13 +1991,13 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                             {L('Expired')}
                           </Tag>
                         ) : (
-                          <Tag
-                            style={{ width: 'fit-content', display: 'inline-block' }}
-                            color="green"
-                          >
-                            {L('UnExpired')}
-                          </Tag>
-                        )}
+                            <Tag
+                              style={{ width: 'fit-content', display: 'inline-block' }}
+                              color="green"
+                            >
+                              {L('UnExpired')}
+                            </Tag>
+                          )}
                       </span>
                       <span>
                         <b>{L('CreationDate')}:</b>{' '}
@@ -1996,7 +2021,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                 className="event-table"
                 pagination={eventPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingEvents}
+                loading={this.props.clientStore ?.loadingEvents}
                 dataSource={events === undefined ? [] : events}
                 columns={this.eventsTableColumns}
                 expandable={{
@@ -2004,8 +2029,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   expandedRowRender: (record) => (
                     <p className="expanded-row" style={{ margin: 0 }}>
                       <span>
@@ -2065,7 +2090,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                 className="event-table"
                 pagination={momentPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingMoments}
+                loading={this.props.clientStore ?.loadingMoments}
                 dataSource={this.props.clientStore.moments || []}
                 columns={this.momentsTableColumns}
               />
@@ -2182,7 +2207,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                 className="checkins-table"
                 pagination={checkinsPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingCheckins}
+                loading={this.props.clientStore ?.loadingCheckins}
                 dataSource={this.props.clientStore.checkins || []}
                 columns={this.checkinssTableColumns}
               />
@@ -2199,7 +2224,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                 className="event-table"
                 pagination={sessionPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingSessions}
+                loading={this.props.clientStore ?.loadingSessions}
                 dataSource={this.props.clientStore.sessions || []}
                 columns={this.sessionsTableColumns}
                 expandable={{
@@ -2207,8 +2232,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   expandedRowRender: (record) => (
                     <p className="expanded-row" style={{ margin: 0 }}>
                       <span>
@@ -2239,7 +2264,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <Table
                 pagination={dishesPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingDishes}
+                loading={this.props.clientStore ?.loadingDishes}
                 dataSource={this.props.clientStore.dishes || []}
                 columns={this.dishesTableColumns}
               />
@@ -2255,7 +2280,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <Table
                 pagination={toDoPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingToDoList}
+                loading={this.props.clientStore ?.loadingToDoList}
                 dataSource={this.props.clientStore.toDoList || []}
                 columns={this.toDoTableColumns}
               />
@@ -2271,7 +2296,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <Table
                 pagination={appointmentPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingAppointments}
+                loading={this.props.clientStore ?.loadingAppointments}
                 dataSource={this.props.clientStore.appointments || []}
                 columns={this.appointmentTableColumns}
               />
@@ -2287,7 +2312,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
               <Table
                 pagination={habitsPagination}
                 rowKey={(record) => `${record.id}`}
-                loading={this.props.clientStore?.loadingHabits}
+                loading={this.props.clientStore ?.loadingHabits}
                 dataSource={this.props.clientStore.habits || []}
                 columns={this.habitsTableColumns}
               />
@@ -2312,8 +2337,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   expandedRowRender: (record) => (
                     <p className="expanded-row" style={{ margin: 0 }}>
                       <span>
@@ -2377,8 +2402,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   // expandedRowRender: (record) => (
                   // <p className="expanded-row" style={{ margin: 0 }}>
                   //   <span>
@@ -2436,8 +2461,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   rowExpandable: (record) => true,
                 }}
               />
@@ -2463,13 +2488,13 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     expanded ? (
                       <UpOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
                     ) : (
-                      <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
-                    ),
+                        <DownOutlined className="expand-icon" onClick={(e) => onExpand(record, e)} />
+                      ),
                   rowExpandable: (record) => true,
                 }}
                 footer={() => (
                   <a
-                    download={`user-auth-${clientModel?.id}.xlsx`}
+                    download={`user-auth-${clientModel ?.id}.xlsx`}
                     className="ant-btn ant-btn-default export-btn"
                     style={{ float: localization.isRTL() ? 'right' : 'left' }}
                     id="export2"
@@ -2547,16 +2572,16 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   {clientModel.gender === GenderType.Female
                     ? L('Female')
                     : clientModel.gender === GenderType.Male
-                    ? L('Male')
-                    : L('Not Selected')}
+                      ? L('Male')
+                      : L('Not Selected')}
                 </td>
                 <td>{clientModel.hasAvatar ? L('Yes') : L('No')}</td>
                 <td>{clientModel.city ? clientModel.city.text : L('NotAvailable')}</td>
                 <td>
                   {clientModel.addresses && clientModel.addresses.length > 0
                     ? clientModel.addresses.map((address: AddressDto) =>
-                        address.city ? address.city.text + ', ' : '' + address.street + ' - '
-                      )
+                      address.city ? address.city.text + ', ' : '' + address.street + ' - '
+                    )
                     : L('NotAvailable')}
                 </td>
                 <td>{moment(clientModel.birthDate).format(timingHelper.defaultDateFormat)}</td>
@@ -2570,63 +2595,63 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   {clientModel.status === UserStatus.Inactive
                     ? L('Inactive')
                     : clientModel.status === UserStatus.Active
-                    ? L('Active')
-                    : L('Blocked')}
+                      ? L('Active')
+                      : L('Blocked')}
                 </td>
                 <td>{moment(clientModel.creationTime).format(timingHelper.defaultDateFormat)}</td>
                 <td>
                   {this.props.clientStore.personalityQuestions &&
-                  this.props.clientStore.personalityQuestions.length > 0 ? (
-                    <>
-                      {this.props.clientStore.personalityQuestions.map(
-                        (item: AnswerOutPutDto, index: number) => {
-                          return `${index + 1}.${item.question}: ${item.choice}.\n`;
-                        }
-                      )}
-                    </>
-                  ) : (
-                    L('NotAvailable')
-                  )}
+                    this.props.clientStore.personalityQuestions.length > 0 ? (
+                      <>
+                        {this.props.clientStore.personalityQuestions.map(
+                          (item: AnswerOutPutDto, index: number) => {
+                            return `${index + 1}.${item.question}: ${item.choice}.\n`;
+                          }
+                        )}
+                      </>
+                    ) : (
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.healthQuestions &&
-                  this.props.clientStore.healthQuestions.length > 0 ? (
-                    <>
-                      {this.props.clientStore.healthQuestions.map(
-                        (item: HealthProfileAnswerDto, index: number) => {
-                          return `${index + 1}.${item.question}: ${item.answer}.\n`;
-                        }
-                      )}
-                    </>
-                  ) : (
-                    L('NotAvailable')
-                  )}
+                    this.props.clientStore.healthQuestions.length > 0 ? (
+                      <>
+                        {this.props.clientStore.healthQuestions.map(
+                          (item: HealthProfileAnswerDto, index: number) => {
+                            return `${index + 1}.${item.question}: ${item.answer}.\n`;
+                          }
+                        )}
+                      </>
+                    ) : (
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.challenges &&
-                  this.props.clientStore.challenges.length > 0 ? (
-                    <>
-                      {this.props.clientStore.challenges.map(
-                        (item: ChallengeDto, index: number) => {
-                          return `${index + 1}.${L('Title')}:${item.title}, ${L('Points')}:${
-                            item.points
-                          }, ${L('CurrentStep')}:${
-                            item.currentStep === StepType.Joined
-                              ? L('Joined')
-                              : item.currentStep === StepType.NotJoined
-                              ? L('NotJoined')
-                              : item.currentStep === StepType.InviteFriends
-                              ? L('InviteFriends')
-                              : item.currentStep === StepType.VerifiedMoment
-                              ? L('VerifiedMoment')
-                              : L('ClaimRewards')
-                          }.\n`;
-                        }
-                      )}
-                    </>
-                  ) : (
-                    L('NotAvailable')
-                  )}
+                    this.props.clientStore.challenges.length > 0 ? (
+                      <>
+                        {this.props.clientStore.challenges.map(
+                          (item: ChallengeDto, index: number) => {
+                            return `${index + 1}.${L('Title')}:${item.title}, ${L('Points')}:${
+                              item.points
+                              }, ${L('CurrentStep')}:${
+                              item.currentStep === StepType.Joined
+                                ? L('Joined')
+                                : item.currentStep === StepType.NotJoined
+                                  ? L('NotJoined')
+                                  : item.currentStep === StepType.InviteFriends
+                                    ? L('InviteFriends')
+                                    : item.currentStep === StepType.VerifiedMoment
+                                      ? L('VerifiedMoment')
+                                      : L('ClaimRewards')
+                              }.\n`;
+                          }
+                        )}
+                      </>
+                    ) : (
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {' '}
@@ -2643,22 +2668,22 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                           item.toHour
                         ).format(timingHelper.defaultTimeFormat)}, ${L('Category')}:${
                           item.categoryName
-                        }, ${L('City')}:${item.cityName}, ${L('Type')}:${
+                          }, ${L('City')}:${item.cityName}, ${L('Type')}:${
                           item.eventType === EventTypes.Free
                             ? L('Free')
                             : item.eventType === EventTypes.PayWithEnterance
-                            ? L('PayWithEnterance')
-                            : item.eventType === EventTypes.PayWithSeats
-                            ? L('PayWithSeats')
-                            : item.eventType === EventTypes.Private
-                            ? L('Private')
-                            : L('Online')
-                        }.\n`;
+                              ? L('PayWithEnterance')
+                              : item.eventType === EventTypes.PayWithSeats
+                                ? L('PayWithSeats')
+                                : item.eventType === EventTypes.Private
+                                  ? L('Private')
+                                  : L('Online')
+                          }.\n`;
                       })}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>{L('Moments')}</td>
                 <td>
@@ -2673,29 +2698,29 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                       })}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.sessions && this.props.clientStore.sessions.length > 0 ? (
                     <>
                       {this.props.clientStore.sessions.map(
                         (item: DailySessionDto, index: number) => {
-                          return `${index + 1}.${L('Title')}:${item.session?.title}, ${L(
+                          return `${index + 1}.${L('Title')}:${item.session ?.title}, ${L(
                             'Date'
                           )}:${moment(item.creationTime).format(
                             timingHelper.defaultDateFormat
                           )}}, ${L('TrainingKcal')}:${item.trainingKcal}, ${L('WalkingKcal')}:${
                             item.walkingKcal
-                          }, ${L('SessionTime')}:${item.session?.timeInMinutes}, ${L(
-                            'AmountOfCalories'
-                          )}:${item.session?.amountOfCalories}.\n`;
+                            }, ${L('SessionTime')}:${item.session ?.timeInMinutes}, ${L(
+                              'AmountOfCalories'
+                            )}:${item.session ?.amountOfCalories}.\n`;
                         }
                       )}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.dishes && this.props.clientStore.dishes.length > 0 ? (
@@ -2709,16 +2734,16 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                           item.type === DishType.Breakfast
                             ? L('Breakfast')
                             : item.type === DishType.Launch
-                            ? L('Launch')
-                            : item.type === DishType.Snak
-                            ? L('Snak')
-                            : L('Dinner')
-                        }.\n`;
+                              ? L('Launch')
+                              : item.type === DishType.Snak
+                                ? L('Snak')
+                                : L('Dinner')
+                          }.\n`;
                       })}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.toDoList && this.props.clientStore.toDoList.length > 0 ? (
@@ -2730,50 +2755,50 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                           item.priority === ToDoPriority.Important
                             ? L('Important')
                             : item.priority === ToDoPriority.VeryImportant
-                            ? L('VeryImportant')
-                            : L('Normal')
-                        }, ${L('IsAchieved')}:${
+                              ? L('VeryImportant')
+                              : L('Normal')
+                          }, ${L('IsAchieved')}:${
                           item.isAchieved ? L('Achieved') : L('NotAchieved')
-                        }.\n`;
+                          }.\n`;
                       })}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.appointments &&
-                  this.props.clientStore.appointments.length > 0 ? (
-                    <>
-                      {this.props.clientStore.appointments.map(
-                        (item: AppointmentDto, index: number) => {
-                          return `${index + 1}.${L('Title')}:${item.title}, ${L('Date')}:${moment(
-                            item.startDate
-                          ).format(timingHelper.defaultDateFormat)} ${L('To')} ${moment(
-                            item.endDate
-                          ).format(timingHelper.defaultDateFormat)}, ${L('Time')}:${
-                            item.fromHour
-                          } ${L('To')} ${item.toHour}, ${L('Priority')}:${
-                            item.priority === ToDoPriority.Important
-                              ? L('Important')
-                              : item.priority === ToDoPriority.VeryImportant
-                              ? L('VeryImportant')
-                              : L('Normal')
-                          }, ${L('Repeat')}:${
-                            item.repeat === AppointmentRepeat.Daily
-                              ? L('Daily')
-                              : item.repeat === AppointmentRepeat.None
-                              ? L('None')
-                              : item.repeat === AppointmentRepeat.Weekly
-                              ? L('Weekly')
-                              : L('EveryMonth')
-                          }, ${L('IsDone')}:${item.isDone ? L('Complete') : L('InComplete')}.\n`;
-                        }
-                      )}
-                    </>
-                  ) : (
-                    L('NotAvailable')
-                  )}
+                    this.props.clientStore.appointments.length > 0 ? (
+                      <>
+                        {this.props.clientStore.appointments.map(
+                          (item: AppointmentDto, index: number) => {
+                            return `${index + 1}.${L('Title')}:${item.title}, ${L('Date')}:${moment(
+                              item.startDate
+                            ).format(timingHelper.defaultDateFormat)} ${L('To')} ${moment(
+                              item.endDate
+                            ).format(timingHelper.defaultDateFormat)}, ${L('Time')}:${
+                              item.fromHour
+                              } ${L('To')} ${item.toHour}, ${L('Priority')}:${
+                              item.priority === ToDoPriority.Important
+                                ? L('Important')
+                                : item.priority === ToDoPriority.VeryImportant
+                                  ? L('VeryImportant')
+                                  : L('Normal')
+                              }, ${L('Repeat')}:${
+                              item.repeat === AppointmentRepeat.Daily
+                                ? L('Daily')
+                                : item.repeat === AppointmentRepeat.None
+                                  ? L('None')
+                                  : item.repeat === AppointmentRepeat.Weekly
+                                    ? L('Weekly')
+                                    : L('EveryMonth')
+                              }, ${L('IsDone')}:${item.isDone ? L('Complete') : L('InComplete')}.\n`;
+                          }
+                        )}
+                      </>
+                    ) : (
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.habits && this.props.clientStore.habits.length > 0 ? (
@@ -2782,15 +2807,15 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                         (item: PositiveHabitDto, index: number) => {
                           return `${index + 1}.${L('Title')}:${item.title}, ${L('Description')}:${
                             item.description
-                          }, ${L('TotalStepsCount')}:${moment(item.date).format(
-                            timingHelper.defaultDateFormat
-                          )}.\n`;
+                            }, ${L('TotalStepsCount')}:${moment(item.date).format(
+                              timingHelper.defaultDateFormat
+                            )}.\n`;
                         }
                       )}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
                 <td>
                   {this.props.clientStore.dreams && this.props.clientStore.dreams.length > 0 ? (
@@ -2800,16 +2825,16 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                           item.creationTime
                         ).format(timingHelper.defaultDateFormat)}, ${L('TotalStepsCount')}:${
                           item.totalStepsCount
-                        }, ${L('AchievedStepsCount')}:${item.achievedStepsCount}, ${L(
-                          'PendingStepsCount'
-                        )}:${item.pendingStepsCount}, ${L('IsAchieved')}:${
+                          }, ${L('AchievedStepsCount')}:${item.achievedStepsCount}, ${L(
+                            'PendingStepsCount'
+                          )}:${item.pendingStepsCount}, ${L('IsAchieved')}:${
                           item.isAchieved ? L('Achieved') : L('NotAchieved')
-                        }.\n`;
+                          }.\n`;
                       })}
                     </>
                   ) : (
-                    L('NotAvailable')
-                  )}
+                      L('NotAvailable')
+                    )}
                 </td>
               </tr>
             )}
@@ -2832,8 +2857,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             });
             this.props.clientStore!.appointmentModel = undefined;
           }}
-          loading={this.props.clientStore?.isGettingAppointmentData}
-          data={this.props.clientStore?.appointmentModel}
+          loading={this.props.clientStore ?.isGettingAppointmentData}
+          data={this.props.clientStore ?.appointmentModel}
         />
         <SessionDetails
           visible={this.state.sessionDetailsModalVisible}
@@ -2843,8 +2868,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             });
             this.props.clientStore!.sessionModel = undefined;
           }}
-          loading={this.props.clientStore?.isGettingSessionData}
-          data={this.props.clientStore?.sessionModel}
+          loading={this.props.clientStore ?.isGettingSessionData}
+          data={this.props.clientStore ?.sessionModel}
         />
         <MomentDetails
           visible={this.state.momentDetailsModalVisible}
@@ -2854,8 +2879,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             });
             this.props.clientStore!.momentModel = undefined;
           }}
-          loading={this.props.clientStore?.isGettingMomentData}
-          data={this.props.clientStore?.momentModel}
+          loading={this.props.clientStore ?.isGettingMomentData}
+          data={this.props.clientStore ?.momentModel}
         />
         <EventDetails
           visible={this.state.eventDetailsModalVisible}
@@ -2865,8 +2890,8 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
             });
             this.props.clientStore!.eventModel = undefined;
           }}
-          loading={this.props.clientStore?.isGettingMomentData}
-          eventData={this.props.clientStore?.eventModel}
+          loading={this.props.clientStore ?.isGettingMomentData}
+          eventData={this.props.clientStore ?.eventModel}
         />
       </Modal>
     );
