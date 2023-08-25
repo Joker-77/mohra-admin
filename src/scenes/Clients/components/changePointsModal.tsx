@@ -84,7 +84,7 @@ class ChangePointsModal extends Component<IChangePointsModalProps, any> {
         maskClosable={false}
         destroyOnClose
         className={localization.isRTL() ? 'rtl-modal' : 'ltr-modal'}
-        footer={[
+        footer={!this.props.clientStore!.changePointsModalLoading ? [
           <Button key="back" onClick={this.handleCancel}>
             {L('Cancel')}
           </Button>,
@@ -96,7 +96,19 @@ class ChangePointsModal extends Component<IChangePointsModalProps, any> {
           >
             {L('Submit')}
           </Button>,
-        ]}
+        ] : [<Button key="back" disabled onClick={this.handleCancel}>
+          {L('Cancel')}
+        </Button>,
+        <Button
+          disabled
+          key="submit"
+          type="primary"
+          loading={this.props.isSubmittingPoints}
+          onClick={this.handleSubmit}
+        >
+          {L('Submit')}
+        </Button>]
+        }
       >
         {this.props.clientStore!.changePointsModalLoading ? (
           <div className="loading-overlay">
