@@ -64,6 +64,7 @@ import {
   ScheduleOutlined,
   SketchOutlined,
   UpOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import ExcellentExport from 'excellentexport';
 import { ChallengeDto, DishType, StepType } from '../../../services/challenges/dto';
@@ -1515,6 +1516,45 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
       },
     },
   ];
+  pointsTableColumns = [{
+    title: L('ID'),
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: L('Points'),
+    dataIndex: 'points',
+    key: 'points',
+  },
+  {
+    title: L('TargetUserName'),
+    dataIndex: 'targetUserName',
+    key: 'targetUserName',
+  },
+  {
+    title: L('TargetUserInstalledAppDate'),
+    dataIndex: 'targetUserInstalledAppDate',
+    key: 'targetUserInstalledAppDate',
+    render: (shareLinkDate: string): string =>
+      `${moment(shareLinkDate).format(timingHelper.defaultDateFormat)}`,
+  },
+  {
+    title: L('ShareLinkDate'),
+    dataIndex: 'shareLinkDate',
+    key: 'shareLinkDate',
+    render: (shareLinkDate: string): string =>
+      `${moment(shareLinkDate).format(timingHelper.defaultDateFormat)}`,
+  },
+  {
+    title: L('ShareLinkData'),
+    dataIndex: 'shareLinkData',
+    key: 'shareLinkData',
+  },
+  {
+    title: L('ReasonGetsPoints'),
+    dataIndex: 'reasonGetsPoints',
+    key: 'reasaonGetsPoints',
+  }]
   render() {
     const { visible } = this.props;
     const { clientModel, healthProfileInfo } = this.props.clientStore!;
@@ -2102,7 +2142,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   {L('CheckIns')}
                 </span>
               }
-              key="15"
+              key="6"
             >
               <FilterationBox>
                 <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -2218,7 +2258,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <HeartOutlined /> {L('Sessions')}
                 </span>
               }
-              key="6"
+              key="7"
             >
               <Table
                 className="event-table"
@@ -2259,7 +2299,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <CoffeeOutlined /> {L('Dishes')}
                 </span>
               }
-              key="7"
+              key="8"
             >
               <Table
                 pagination={dishesPagination}
@@ -2275,7 +2315,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <OrderedListOutlined /> {L('ToDoList')}
                 </span>
               }
-              key="8"
+              key="9"
             >
               <Table
                 pagination={toDoPagination}
@@ -2291,7 +2331,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <ClockCircleOutlined /> {L('Appointments')}
                 </span>
               }
-              key="9"
+              key="10"
             >
               <Table
                 pagination={appointmentPagination}
@@ -2307,7 +2347,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <RetweetOutlined /> {L('Habits')}
                 </span>
               }
-              key="10"
+              key="11"
             >
               <Table
                 pagination={habitsPagination}
@@ -2323,7 +2363,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <SketchOutlined /> {L('Dreams')}
                 </span>
               }
-              key="11"
+              key="12"
             >
               <Table
                 className="challenge-table"
@@ -2382,7 +2422,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <SketchOutlined /> {L('Total Friends')}
                 </span>
               }
-              key="12"
+              key="13"
             >
               <div className="detail-wrapper">
                 <span className="detail-label">{L('Total Friends')}</span>
@@ -2447,7 +2487,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <SketchOutlined /> {L('Salary Counts')}
                 </span>
               }
-              key="13"
+              key="14"
             >
               <Table
                 className="challenge-table"
@@ -2473,7 +2513,7 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                   <HistoryOutlined /> {L('Auth Session')}
                 </span>
               }
-              key="14"
+              key="15"
             >
               <Table
                 id="auth-session-table"
@@ -2523,6 +2563,23 @@ class ClientDetailsModal extends React.Component<IClientDetailsModalProps, IClie
                     <FileExcelOutlined /> {L('ExportAuthSessionData')}
                   </a>
                 )}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab={
+                <span>
+                  <StarOutlined /> {L('Points')}
+                </span>
+              }
+              key="16"
+            >
+              <Table
+                className="event-table"
+                pagination={sessionPagination}
+                rowKey={`1`}
+                loading={this.props.clientStore ?.loadingSessions}
+                dataSource={[]}
+                columns={this.pointsTableColumns}
               />
             </Tabs.TabPane>
           </Tabs>
