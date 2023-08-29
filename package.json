@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco --openssl-legacy-provider build"
+    "build": "craco build"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
